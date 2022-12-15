@@ -55,3 +55,93 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+// MILESTONE 2
+// identifico il container
+const containerPost = document.getElementById('container')
+
+// scorrere gli oggetti dell'array con il forEach
+posts.forEach((element, index, array) => {
+    // BONUS 1
+    const date = element.created.split('-');
+    let italianDate = `${date[1]}/${date[2]}/${date[0]}`;
+
+    // BONUS 2
+    let imageProfile;
+    
+    if (element.author.image == undefined) {
+        let authorName = element.author.name;
+        const arrayName = authorName.split(' ');
+        let firstName = arrayName[0];
+        let surname = arrayName[1];
+        let nameFirstLetter = firstName.charAt(0);
+        let surnameFirstLetter = surname.charAt(0);
+        imageProfile = `<h1 class="profile-pic color-black">${nameFirstLetter}${surnameFirstLetter}</h1>`;
+    }
+    else {
+        imageProfile = `<img class="profile-pic" src="${element.author.image}" alt="${element.author.name}"></img>`
+    }
+
+    // scorrere le immagini con il forEach
+    containerPost.innerHTML += `<div class="post">
+                                    <div class="post__header">
+                                        <div class="post-meta">                    
+                                            <div class="post-meta__icon">
+                                                ${imageProfile}                    
+                                            </div>
+                                            <div class="post-meta__data">
+                                                <div class="post-meta__author">${element.author.name}</div>
+                                                <div class="post-meta__time">${italianDate}</div>
+                                            </div>                    
+                                        </div>
+                                    </div>
+                                    <div class="post__text">${element.content}</div>
+                                    <div class="post__image">
+                                        <img src="${element.media}" alt="">
+                                    </div>
+                                    <div class="post__footer">
+                                        <div class="likes js-likes">
+                                            <div class="likes__cta">
+                                                <a class="like-button  js-like-button" href="#" data-postid="${element.id}">
+                                                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                                                    <span class="like-button__label">Mi Piace</span>
+                                                </a>
+                                            </div>
+                                            <div class="likes__counter">
+                                                Piace a <b id="like-counter-${element.id}" class="js-likes-counter">${element.likes}</b> persone
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>`          
+})
+
+// MILESTONE 3
+const bottoneLike = document.getElementsByClassName('js-like-button');
+const arrayLike = [];
+
+for (let i=0; i<bottoneLike.length; i++) {
+
+    bottoneLike[i].addEventListener('click', function(){
+        const postId = this.dataset.postid;
+        console.log(postId)
+        const likes = document.getElementById(`like-counter-${postId}`);
+        const likesNumber = parseInt(likes.innerText);
+
+        if(arrayLike.includes(postId)) {
+            likes.innerText = likesNumber-1;
+
+            const index = arrayLike.indexOf(postId);
+            if(index > -1){
+                arrayLike.splice(index,1);
+            }
+            bottoneLike[i].classList.remove("like-button--liked");
+            console.log(arrayLike);
+        }
+        else {
+            likes.innerText = likesNumber+1;
+            arrayLike.push(postId);
+            console.log(arrayLike);
+            bottoneLike[i].classList.add("like-button--liked");
+        }
+    });
+}

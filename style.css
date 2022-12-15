@@ -67,6 +67,10 @@ h1 {
     max-width: 60px;
 }
 
+.color-black {
+    color: black;
+}
+
 .profile-pic-default {
     display: flex;
     justify-content: center;
