@@ -62,6 +62,7 @@ const containerPost = document.getElementById('container')
 
 // scorrere gli oggetti dell'array con il forEach
 posts.forEach((element, index, array) => {
+    
     // BONUS 1
     const date = element.created.split('-');
     let italianDate = `${date[1]}/${date[2]}/${date[0]}`;
@@ -117,23 +118,29 @@ posts.forEach((element, index, array) => {
 
 // MILESTONE 3
 const bottoneLike = document.getElementsByClassName('js-like-button');
+
+// creo un array di like dati in cui inserirò gli id dei pulsanti già premuti
 const arrayLike = [];
 
 for (let i=0; i<bottoneLike.length; i++) {
 
     bottoneLike[i].addEventListener('click', function(){
+        
+        // identifico l'id dell'elemento clickato
         const postId = this.dataset.postid;
         console.log(postId)
+        
+        // identifico l'elemento con i likes con id corrispondente al pulsante clickato
         const likes = document.getElementById(`like-counter-${postId}`);
+
+        // identifico testo dell'elemento clickato
         const likesNumber = parseInt(likes.innerText);
 
-        if(arrayLike.includes(postId)) {
+        // stabilisco la condizione per definire se il like deve essere dato oppure no
+        if (arrayLike.includes(postId)) {
             likes.innerText = likesNumber-1;
-
             const index = arrayLike.indexOf(postId);
-            if(index > -1){
-                arrayLike.splice(index,1);
-            }
+            arrayLike.splice(index,1);
             bottoneLike[i].classList.remove("like-button--liked");
             console.log(arrayLike);
         }
